@@ -1,0 +1,95 @@
+.invalidSpan , .invalidUniqueSpan{
+	color: #FF0000;
+	font-size: 10pt;
+	margin-left: 0px !important;
+}
+
+.invalidUnique, .invalidPassword{
+	background-color: #d82e0b;
+}
+
+.validUnique{
+	background-color: #44fb50;
+}
+
+.registContent {
+	padding-left: 30px;
+}
+/* 회원가입 로그인 화면줄였을 때 */
+.inputValue{
+	display:inline-block;
+	width:80px;
+}
+.form-group{
+	display:inline-block;
+	vertical-align:top;
+}
+
+.genderLabel {
+	display: inline-block;
+	width: 15px;
+	margin-left: 10px;
+	font-family: 'Open Sans', Arial, sans-serif;
+	font-size: 14px;
+	color: #656565;
+	font-weight: 300;
+}
+
+.selectBox {
+	width: 80px;
+}
+
+.styleLabel {
+	display: inline-block;
+	width: 45px;
+	margin-left: 10px;
+	font-family: 'Open Sans', Arial, sans-serif;
+	font-size: 14px;
+	color: #656565;
+	font-weight: 300;
+}
+
+.preferStyleLabel {
+	display: inline-block;
+	width: 45px;
+	margin-left: 10px;
+	font-family: 'Open Sans', Arial, sans-serif;
+	font-size: 14px;
+	color: #656565;
+	font-weight: 300;
+}
+
+.preferCollege{
+	width: 80px;
+	display: inline-block;
+	font-family: 'Open Sans', Arial, sans-serif;
+	font-size: 14px;
+	color: #656565;
+	font-weight: 300;
+}
+
+.livingAloneLabel{
+	display: inline-block;
+	font-family: 'Open Sans', Arial, sans-serif;
+	font-size: 14px;
+	color: #656565;
+	font-weight: 300;
+}
+
+h2{
+	font-family: 'Open Sans', Arial, sans-serif;
+	color: #656565;
+}
+
+.bottom-margin-5{
+	margin-bottom: 5px !important;
+}
+
+.deleteMember {
+	background-color: #ffffff !important;
+	border: none !important;
+}
+
+.clear-marginbot {
+	margin-bottom: 0px !important;
+}

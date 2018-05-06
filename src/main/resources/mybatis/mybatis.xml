@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.meeting.www.member.vo.MemberVO" alias="MemberVO" />
+		<typeAlias type="com.meeting.www.school.vo.SchoolVO" alias="SchoolVO" />
+		<typeAlias type="com.meeting.www.school.vo.CollegeVO" alias="CollegeVO" />
+		<typeAlias type="com.meeting.www.school.vo.MajorVO" alias="MajorVO" />
+		<typeAlias type="com.meeting.www.member.vo.StyleVO" alias="StyleVO"/>
+		<typeAlias type="com.meeting.www.preference.vo.PreferStyleVO" alias="PreferStyleVO"/>
+		<typeAlias type="com.meeting.www.preference.vo.PreferAddrVO" alias="PreferAddrVO"/>
+		<typeAlias type="com.meeting.www.preference.vo.PreferCollegeVO" alias="PreferCollegeVO"/>
+		<typeAlias type="com.meeting.www.matching.vo.MatchingTeamVO" alias="MatchingTeamVO"/>
+		<typeAlias type="com.meeting.www.matching.vo.MatchingTeamMemberVO" alias="MatchingTeamMemberVO"/>
+		<typeAlias type="com.meeting.www.matching.vo.SoloMatchingVO" alias="SoloMatchingVO"/>
+		<typeAlias type="com.meeting.www.matching.vo.TeamMatchingVO" alias="TeamMatchingVO"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="/com/meeting/www/member/dao/sql/memberDao.xml" />
+		<mapper resource="/com/meeting/www/preference/dao/sql/preferDao.xml" />
+		<mapper resource="/com/meeting/www/school/dao/sql/schoolDao.xml" />
+		<mapper resource="/com/meeting/www/matching/dao/sql/matchingDao.xml" />
+	</mappers>
+
+</configuration>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace = "schoolDao">
+  
+  	<select id="selectAllSchool" resultType="SchoolVO">
+  		SELECT	SCHOOL_ID schoolId
+  				, SCHOOL_NAME schoolName
+  				, ADDR_ID	addrId
+  				, SCHOOL_VISIBLE schoolVisible
+  		FROM		SCHOOL
+  		ORDER BY SCHOOL_ID ASC
+  	</select>
+
+	<select id="selectAllCollege" resultType="CollegeVO">
+		SELECT	COLLEGE_ID collegeId
+				, COLLEGE
+		FROM		COLLEGE
+		ORDER	BY	COLLEGE_ID
+	</select>
+	
+	<select id="selectAllMajor" resultType="MajorVO">
+		SELECT	MAJOR_ID	 majorId
+				, MAJOR
+				, COLLEGE_ID collegeId
+				, VISIBLE
+		FROM		Major
+	</select>
+  
+  </mapper>

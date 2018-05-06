@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- interface의 이름을 적어준다 -->
+<mapper namespace = "MatchingDao">
+
+	<resultMap type="MatchingTeamMemberVO" id="MatchingTeamMemberVOMap">
+		<result column="MATCHING_TEAM_ID" property="matchingTeamId" />
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="INVITE_ACCEPT" property="inviteAccept"/>
+		<result column="DELETE_TEAM_ACCEPT" property="deleteTeamAccept"/> 
+		<association property="memberVO" javaType="MemberVO">
+			<result column="MEMBER_ID" property="memberId"/>
+			<result column="USER_ID" property="userId"/>
+			<result column="NICKNAME" property="nickname"/>
+			<result column="GENDER" property="gender"/>
+			<result column="BIRTHDAY" property="birthday"/>
+			<result column="ADMISSION_YEAR" property="admissionYear"/>
+			<result column="PHONE_NUMBER" property="phoneNumber"/>
+			<result column="SCHOOL_ID" property="schoolId"/>
+			<result column="MAJOR_ID" property="majorId"/>
+			<result column="MILITARY_SERVICE" property="militaryService"/>
+			<result column="NAME" property="name"/>
+			<result column="ABOUTME" property="aboutMe"/>
+			<result column="LIVING_ALONE" property="livingAlone"/>
+			<result column="REGIST_DATE" property="registDate"/>
+			<result column="ADDR_ID" property="addrId"/>
+			<result column="PREFER_LIVING_ALONE" property="preferLivingAlone"/>
+			<result column="PREFER_AGE_START" property="preferAgeStart"/>
+			<result column="PREFER_AGE_END" property="preferAgeEnd"/>
+		</association>
+	
+	</resultMap>
+	
+	<resultMap type="TeamMatchingVO" id="TeamMatchingVOMap">
+		<result column="TEAM_MATCHING_ID" property="matchingTeamId"/>
+		<result column="MATCHING_NOP" property="matchingNOP"/>
+		<association property="fMatchingTeamVO" javaType="MatchingTeamVO">
+			<result column="F_MATCHING_TEAM_ID" property="matchingTeamId"/>
+			<result column="F_MATCHING_TEAM_NAME" property="matchingTeamName"/>
+		</association>
+		<association property="mMatchingTeamVO" javaType="MatchingTeamVO">
+			<result column="M_MATCHING_TEAM_ID" property="matchingTeamId"/>
+			<result column="M_MATCHING_TEAM_NAME" property="matchingTeamName"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="SoloMatchingVO" id="SoloMatchingVOMap">
+		<result column="SOLO_MATCHING_ID" property="soloMatchingId" />
+		<result column="F_MEMBER_ID" property="fMatchingId" />
+		<result column="M_MEMBER_ID" property="mMatchingId" />
+		<association property="partner" javaType="MemberVO">
+			<result column="MEMBER_ID" property="memberId" />
+			<result column="USER_ID" property="userId"/>
+			<result column="NICKNAME" property="nickname"/>
+			<result column="NAME" property="name"/>
+		</association>
+	</resultMap>
+
+	
+	<select id="selectMatchingTeamList" parameterType="_int" resultType="MatchingTeamVO">
+		
+		SELECT	MATCHING_TEAM_ID matchingTeamId
+				, MATCHING_TEAM_NAME matchingTeamName
+				, INVITE
+				, TEAM_NOP teamNOP
+				, TEAM_GENDER teamGender
+				, MATCHING_TEAM_MASTER matchingTeamMaster
+		FROM		MATCHING_TEAM
+		WHERE	MATCHING_TEAM_ID IN	(
+							SELECT	MATCHING_TEAM_ID
+							FROM	MATCHING_TEAM_MEMBER
+							WHERE	MEMBER_ID = #{memberId}
+							)
+		AND		INVITE = 'yes'
+		
+	</select>
+	
+	<select id="selectConditonalMatchingTeam" parameterType="map" resultType="MatchingTeamVO">
+	
+		SELECT	MATCHING_TEAM_ID matchingTeamId
+				, MATCHING_TEAM_NAME matchingTeamName
+				, TEAM_NOP teamNOP
+				, INVITE
+				, TEAM_GENDER teamGender
+				, MATCHING_TEAM_MASTER matchingTeamMaster
+		FROM	MATCHING_TEAM
+		WHERE	MATCHING_TEAM_ID IN (
+							SELECT	MATCHING_TEAM_ID
+							FROM	MATCHING_TEAM_MEMBER
+							WHERE	MEMBER_ID = #{memberId}
+							AND		INVITE_ACCEPT = #{yetYesNo}
+							)
+		AND		( INVITE = 'yet' OR INVITE = 'no' )
+	
+	</select>
+	
+	<select id="selectMatchingTeamMemberList" parameterType="map" resultMap="MatchingTeamMemberVOMap">
+	
+		SELECT	MTM.MATCHING_TEAM_ID 
+				, MTM.MEMBER_ID	
+				, MTM.INVITE_ACCEPT	
+				, MTM.DELETE_TEAM_ACCEPT
+				, M.MEMBER_ID
+				, M.USER_ID
+				, M.NICKNAME
+				, M.NAME
+		FROM	MATCHING_TEAM_MEMBER MTM
+				, MEMBER M
+		WHERE	MTM.MEMBER_ID = M.MEMBER_ID
+		AND		MTM.MATCHING_TEAM_ID = #{matchingTeamId}
+	
+	</select>
+	
+	<select id="selectMatchingTeam" parameterType="string" resultType="MatchingTeamVO">
+	
+		SELECT	MATCHING_TEAM_ID matchingTeamId
+				, MATCHING_TEAM_NAME matchingTeamName
+				, TEAM_NOP teamNOP
+				, INVITE
+				, TEAM_GENDER teamGender
+				, MATCHING_TEAM_MASTER matchingTeamMaster
+		FROM	MATCHING_TEAM
+		WHERE	MATCHING_TEAM_NAME = #{teamName}
+	
+	</select>
+	
+	<select id="selectMatchingTeamMemberAcceptList" parameterType="string" resultType="string">
+	
+		SELECT	INVITE_ACCEPT
+		FROM	MATCHING_TEAM_MEMBER
+		WHERE	MATCHING_TEAM_ID = (
+									SELECT MATCHING_TEAM_ID 
+									FROM MATCHING_TEAM 
+									WHERE MATCHING_TEAM_NAME = #{matchingTeamName}
+									)
+	
+	</select>
+	
+	<select id="selectFemaleSoloMatchingList" parameterType="_int" resultMap="SoloMatchingVOMap">
+	
+		SELECT	S.SOLO_MATCHING_ID
+				, S.F_MEMBER_ID
+				, M.MEMBER_ID
+				, M.USER_ID
+				, M.NICKNAME
+				, M.NAME
+		FROM	SOLO_MATCHING S
+				, MEMBER M
+		WHERE	S.F_MEMBER_ID = #{memberId}
+		AND		S.M_MEMBER_ID = M.MEMBER_ID 
+	
+	</select>
+	
+	<select id="selectMaleSoloMatchingList" parameterType="_int" resultMap="SoloMatchingVOMap">
+	
+		SELECT	S.SOLO_MATCHING_ID
+				, S.F_MEMBER_ID
+				, M.MEMBER_ID
+				, M.USER_ID
+				, M.NICKNAME
+				, M.NAME
+		FROM	SOLO_MATCHING S
+				, MEMBER M
+		WHERE	S.M_MEMBER_ID = #{memberId}
+		AND		S.F_MEMBER_ID = M.MEMBER_ID 
+	
+	</select>
+	
+	<select id="selectTeamMatchingVO" parameterType="_int" resultType="TeamMatchingVO">
+	
+		SELECT	TM.TEAM_MATCHING_ID	
+				, TM.F_MATCHING_TEAM_ID F_MATCHING_TEAM_ID
+				, FMT.MATCHING_TEAM_NAME F_MATCHING_TEAM_NAME
+				, TM.M_MATCHING_TEAM_ID M_MATCHING_TEAM_ID
+				, MMT.M_MATCHING_TEAM_NAME M_MATCHING_TEAM_NAME
+				, TM.MATCHING_NOP 
+		FROM	TEAM_MATCHING TM
+				, MATCHING_TEAM FMT
+				, MATCHING_TEAM MMT
+		WEHRE	(
+					TM.F_MATCHING_TEAM_ID = (SELECT MATCHING_TEAM_ID FROM MATCHING_TEAM_MEMBER WHERE MEMBER_ID = #{memberId})
+				OR	TM.M_MATCHING_TEAM_ID = (SELECT MATCHING_TEAM_ID FROM MATCHING_TEAM_MEMBER WHERE MEMBER_ID = #{memberId})
+				)
+	
+	</select>
+	
+	<insert id="insertMatchingTeam" parameterType="MatchingTeamVO">
+	
+		INSERT
+		INTO	MATCHING_TEAM (
+					MATCHING_TEAM_ID
+					, MATCHING_TEAM_NAME
+					, TEAM_NOP
+					, INVITE
+					, TEAM_GENDER
+					, MATCHING_TEAM_MASTER
+				)
+		VALUES	(
+					MATCHING_TEAM_ID_SEQ.NEXTVAL
+					, #{matchingTeamName}
+					, #{teamNOP}
+					, 'yet'
+					, #{teamGender}
+					, #{matchingTeamMaster}
+				)
+	
+	</insert>
+	
+	<insert id="insertMatchingTeamMember" parameterType="string">
+	
+		INSERT
+		INTO	MATCHING_TEAM_MEMBER (
+					MATCHING_TEAM_ID
+					, MEMBER_ID
+					, INVITE_ACCEPT
+					, DELETE_TEAM_ACCEPT
+				)
+		VALUES	(
+					MATCHING_TEAM_ID_SEQ.CURRVAL
+					, (SELECT MEMBER_ID FROM MEMBER WHERE USER_ID = #{userId} )
+					, 'yet'
+					, 'yet'
+				)
+	
+	</insert>
+	
+	<update id="updateAcceptInvite" parameterType="map">
+	
+		UPDATE	MATCHING_TEAM_MEMBER
+		SET		INVITE_ACCEPT = 'yes'
+		WHERE	MATCHING_TEAM_ID = (SELECT MATCHING_TEAM_ID FROM MATCHING_TEAM WHERE MATCHING_TEAM_NAME = #{teamName})
+		AND		MEMBER_ID = #{memberId}	
+	</update>
+	
+	<update id="updateRejectInvite" parameterType="map">
+	
+		UPDATE	MATCHING_TEAM_MEMBER
+		SET		INVITE_ACCEPT = 'no'
+		WHERE	MATCHING_TEAM_ID = (SELECT MATCHING_TEAM_ID FROM MATCHING_TEAM WHERE MATCHING_TEAM_NAME = #{teamName})
+		AND		MEMBER_ID = #{memberId}	
+	</update>
+	
+	<update id="updateCancelInvite" parameterType="map">
+	
+		UPDATE	MATCHING_TEAM_MEMBER
+		SET		INVITE_ACCEPT = 'yet'
+		WHERE	MATCHING_TEAM_ID = (SELECT MATCHING_TEAM_ID FROM MATCHING_TEAM WHERE MATCHING_TEAM_NAME = #{teamName})
+		AND		MEMBER_ID = #{memberId}	
+	</update>
+	
+	<update id="updateMatchingTeamInviteYes" parameterType="string">
+	
+		UPDATE	MATCHING_TEAM
+		SET		INVITE = 'yes'
+		WHERE	MATCHING_TEAM_NAME = #{teamName}
+	
+	</update>
+	
+	<update id="updateMatchingTeamInviteNo" parameterType="string">
+	
+		UPDATE	MATCHING_TEAM
+		SET		INVITE = 'no'
+		WHERE	MATCHING_TEAM_NAME = #{teamName}	
+	
+	</update>
+	
+	<select id="selectCountByGender" parameterType="string" resultType="_int">
+	
+		SELECT	COUNT(MATCHING_TEAM_ID)
+		FROM	MATCHING_TEAM
+		WHERE	TEAM_GENDER = #{gender}
+	
+	</select>
+	
+	<select id="selectTeamByGender" parameterType="string" resultType="MatchingTeamVO">
+	
+		SELECT	MATCHING_TEAM_ID matchingTeamId
+				, TEAM_NOP teamNOP
+				, INVITE
+				, TEAM_GENDER teamGender
+				, MATCHING_TEAM_NAME matchingTeamName
+				, MATCHING_TEAM_MASTER matchingTeamMaster
+		FROM	MATCHING_TEAM
+		WHERE	TEAM_GENDER = #{gender}
+	
+	</select>
+
+</mapper>

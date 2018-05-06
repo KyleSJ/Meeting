@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- interface의 이름을 적어준다 -->
+<mapper namespace = "MemberDao">
+
+<!-- 수행할 함수명  resultType : 결과값을 담아줄 VO -->
+	<insert id="insertMember" parameterType="MemberVO">
+	
+		INSERT	
+		INTO		MEMBER (
+				MEMBER_ID
+				, USER_ID
+				, PASSWORD
+				, NAME
+				, NICKNAME
+				, GENDER
+				, BIRTHDAY 
+				, ADMISSION_YEAR
+				, PHONE_NUMBER
+				<!-- , ADDR_ID -->
+				, SCHOOL_ID
+				, MAJOR_ID
+				, LIVING_ALONE
+				, MILITARY_SERVICE
+				, ABOUTME
+				, REGIST_DATE
+				, SALT
+				, PREFER_LIVING_ALONE
+				, PREFER_AGE_START
+				, PREFER_AGE_END
+		)
+		VALUES	(
+				MEMBER_ID_SEQ.NEXTVAL
+				, #{userId}
+				, #{password}
+				, #{name}
+				, #{nickname}
+				, #{gender}
+				, #{birthday}
+				, #{admissionYear}
+				, #{phoneNumber}
+				<!-- , #{addrId} -->
+				, #{schoolId}
+				, #{majorId}
+				, #{livingAlone}
+				, #{militaryService}
+				, #{aboutMe}
+				, SYSDATE
+				, #{salt}
+				, #{preferLivingAlone}
+				, #{preferAgeStart}
+				, #{preferAgeEnd}
+		)
+	
+	</insert>
+	
+	<insert id="insertStyle" parameterType="StyleVO">
+		INSERT
+		INTO	MEMBER_STYLE(
+				MEMBER_ID
+				, STYLE_ID
+		)
+		VALUES	(
+				MEMBER_ID_SEQ.CURRVAL
+				, #{styleVO.styleId}
+		)
+		
+	</insert>
+	
+	<select id="selectOne" parameterType="MemberVO" resultType="MemberVO">
+		SELECT	MEMBER_ID memberId
+				, USER_ID userId
+				, PASSWORD
+				, NAME
+				, NICKNAME
+				, GENDER 
+				, BIRTHDAY birthday
+				, ADMISSION_YEAR admissionYear
+				, PHONE_NUMBER phoneNumber
+				, ADDR_ID addrId
+				, SCHOOL_ID schoolId
+				, LIVING_ALONE livingAlone
+				, MILITARY_SERVICE militaryService
+				, ABOUTME
+				, SALT
+		FROM	MEMBER
+		WHERE	USER_ID = #{userId}
+		AND		PASSWORD = #{password}
+	</select>
+	
+	<select id="selectSalt" parameterType="string" resultType="string">
+		SELECT	SALT
+		FROM		MEMBER
+		WHERE	USER_ID = #{userId}
+	</select>
+	
+	<select id="selectCountUserId" parameterType="string" resultType="_int">
+		SELECT	COUNT(MEMBER_ID)
+		FROM		MEMBER
+		WHERE	USER_ID = #{userId}
+	</select>
+	
+	<select id="slelectCountNickname" parameterType="string" resultType="_int">
+		SELECT	COUNT(MEMBER_ID)
+		FROM		MEMBER
+		WHERE	NICKNAME = #{nickname}
+	</select>
+	
+	<select id="selectRecommendId" parameterType="string" resultType="MemberVO">
+		SELECT	USER_ID userId
+				, NAME
+		FROM	MEMBER
+		WHERE	NAME LIKE #{startWith}||'%'
+		AND		GENDER = #{gender}
+	</select>
+	
+	<select id="selectMemberByGender" parameterType="string" resultType="MemberVO">
+	
+		SELECT	MEMBER_ID
+				, USER_ID
+				, NICKNAME
+				, BIRTHDAY birthday
+				, NAME
+				, ABOUTME
+				, ADDR_ID
+		FROM	MEMBER
+		WHERE	GENDER = #{gender}
+	
+	</select>
+	
+	<select id="selectPartner" parameterType="_int" resultType="MemberVO">
+	
+		SELECT	MEMBER_ID memberId
+				, USER_ID userId
+				, NICKNAME
+				, BIRTHDAY birthday
+				, NAME
+				, ABOUTME
+				, ADDR_ID addrId
+		FROM	MEMBER
+		WHERE	MEMBER_ID = #{partnerMemberId}
+	
+	</select>
+	
+	<select id="selectMemberSimple" parameterType="string" resultType="MemberVO">
+	
+		SELECT	MEMBER_ID memberId
+				, USER_ID userId
+				, NAME
+		FROM	MEMBER
+		WHERE	USER_ID = #{userId}
+	
+	</select>
+	
+	<select id="selectCountByGender" parameterType="string" resultType="_int">
+	
+		SELECT	COUNT(MEMBER_ID)
+		FROM	MEMBER
+		WHERE	GENDER = #{gender}
+	
+	</select>
+
+</mapper>

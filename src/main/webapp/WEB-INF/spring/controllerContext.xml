@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean 	id="memberController"
+			class="com.meeting.www.member.controller.MemberController">
+			<property name="memberService" ref="memberService" />
+			<property name="schoolService" ref="schoolService" />
+	</bean>
+	
+	<bean	id="schoolController"
+			class="com.meeting.www.school.controller.SchoolController">
+					
+	</bean>
+	<bean	id="matchingController"
+			class="com.meeting.www.matching.controller.MatchingController">
+		<property name="matchingService" ref="matchingService" />
+		<property name="memberService" ref="memberService" />
+	</bean>
+	
+	<bean	id="searchController"
+			class="com.meeting.www.search.controller.SearchController">
+		<property name="memberService" ref="memberService" />
+		<property name="matchingService" ref="matchingService" />
+	</bean>
+
+</beans>

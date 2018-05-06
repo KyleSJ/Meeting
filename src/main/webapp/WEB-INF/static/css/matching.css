@@ -1,0 +1,27 @@
+
+#left, #center, #right {
+	display: inline-block;
+	width: 400px;
+	vertical-align: top;
+}
+
+.matchingTeamName:hover , .matchingPartnerName:hover {
+	color: #FF0000;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.name {
+	width: 100px;
+	display: inline-block;
+}
+
+.userId{
+	width: 100px;
+	display: inline-block;
+}
+
+.inviteAccept{
+	width: 100px;
+	display: inline-block;
+}

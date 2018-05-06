@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+
+	<mvc:annotation-driven />
+	<mvc:resources location="/WEB-INF/static/" mapping="/static/**" />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+		
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/logout"/>
+			<mvc:exclude-mapping path="/static/**" />
+			<mvc:exclude-mapping path="/member/regist/**"/>
+			<mvc:exclude-mapping path="/api/isExist/**"/>
+			<mvc:exclude-mapping path="/search/**"/>
+			<bean id="sessionInterceptor" class="com.meeting.www.interceptors.SessionInterceptor" />
+		</mvc:interceptor>
+	
+	</mvc:interceptors>
+
+
+	<import resource="controllerContext.xml" />
+</beans>
