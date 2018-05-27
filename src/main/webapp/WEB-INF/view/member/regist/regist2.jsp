@@ -45,7 +45,10 @@
 		});
 		
 		function afterInvalidUnique(elementId, content){
-			$("#"+elementId).after("<span id='" + elementId +"InvalidUniqueSpan' class='invalidUniqueSpan'>" + content + "이(가) 중복됩니다. 다른 "+ content +"을(를) 입력해 주세요.</span>");
+			$("#"+elementId).after("<span id='"
+					+ elementId + "InvalidUniqueSpan' class='invalidUniqueSpan'>"
+					+ content + "이(가) 중복됩니다. 다른 "
+					+ content +"을(를) 입력해 주세요.</span>");
 		}
 		
 		function checkInvalid(elementId, content){
@@ -85,7 +88,9 @@
 		}
 	    
 	    function afterInvalid(elementId, content){
-	    		$("#"+elementId).after("<span id='"+elementId+"InvalidSpan' class='invalidSpan'>" + content + "을(를) 입력하세요.</span>");
+	    		$("#"+elementId).after("<span id='"
+	    				+ elementId + "InvalidSpan' class='invalidSpan'>"
+	    				+ content + "을(를) 입력하세요.</span>");
 	    }
 
 		var invalid = false;

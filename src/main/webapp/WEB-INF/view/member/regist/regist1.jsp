@@ -111,11 +111,15 @@
 		});
 
 		function afterInvalidUnique(elementId, content) {
-			$("#" + elementId).after("<div class='span5 invalidUniqueSpan' id='" + elementId + "InvalidUniqueSpan'>" + content + "이(가) 중복됩니다. 다른 " + content + "을(를) 입력해 주세요.</div>");
+			$("#" + elementId).after("<div class='span5 invalidUniqueSpan' id='"
+					+ elementId + "InvalidUniqueSpan'>"
+					+ content + "이(가) 중복됩니다. 다른 "
+					+ content + "을(를) 입력해 주세요.</div>");
 		}
 		
 		function afterInvalidPassword(elementId, content){
-			$("#" + elementId).after("<div class='span5 invalidUniqueSpan' id='" + elementId + "InvalidPassword'>" + content + "가 일치하지 않습니다.</div>");
+			$("#" + elementId).after("<div class='span5 invalidUniqueSpan' id='"
+					+ elementId + "InvalidPassword'>" + content + "가 일치하지 않습니다.</div>");
 		}
 
 		function checkInvalid(elementId, content) {
@@ -131,7 +135,9 @@
 		}
 
 		function afterInvalid(elementId, content) {
-			$("#" + elementId).after("<div class='span5 invalidSpan' id='" + elementId + "InvalidSpan'>" + content + "을(를) 입력하세요.</div>");
+			$("#" + elementId).after("<div class='span5 invalidSpan' id='"
+					+ elementId + "InvalidSpan'>"
+					+ content + "을(를) 입력하세요.</div>");
 		}
 
 		var invalid = false;
@@ -145,20 +151,14 @@
 
 			if (invalid == true) {
 				invalid = false;
-				console.log("invalid 감지");
 				return false;
 			}
-
-			console.log("invalid check 모두 통과");
-			console.log(invalid);
-			console.log(uniqueInvalid);
-			console.log(passwordInvalid);
+			
 			if (invalid != true && uniqueInvalid != true && passwordInvalid != true) {
 				$.post("<c:url value="/api/isExist/userId"/>", {
 					userId: $("#userId").val()
 				}, function (response) {
 					if (response.isExist) {
-						console.log("id exist");
 						$("#userId").focus();
 						afterInvalidUnique("userId", "아이디");
 						$("#userId").addClass("invalidUnique");
@@ -172,7 +172,6 @@
 							nickname: $("#nickname").val()
 						}, function (response) {
 							if (response.isExist) {
-								console.log("nickname exist");
 								$("#nickname").focus();
 								afterInvalidUnique("nickname", "닉네임");
 								$("#nickname").addClass("invalidUnique");
